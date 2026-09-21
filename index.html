@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sunkissed — Get the tan. Skip the burn.</title>
+<meta name="description" content="Live UV index, the best hours to tan today, and a flip timer that tells you when to turn over and when to reapply. No account, no ads.">
+<meta property="og:title" content="Sunkissed — Get the tan. Skip the burn.">
+<meta property="og:description" content="Live UV index, the best hours to tan, and a flip timer that keeps your tan even.">
+<meta property="og:image" content="img/og.jpg">
+<meta name="theme-color" content="#FF4DA6">
+<link rel="icon" href="img/favicon.png">
+<style>
+  @font-face { font-family: "Titan One"; src: url("fonts/TitanOne-Regular.ttf"); font-display: swap; }
+
+  :root {
+    --pink: #FF2E93; --magenta: #FF4DA6; --orange: #FF7A1A; --sunny: #FFC23F;
+    --yellow: #FFE678; --ink: #6E1240; --ink-soft: #A85B80; --berry: #2A0A1C;
+    --display: "Titan One", "Arial Rounded MT Bold", system-ui, sans-serif;
+    --body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: var(--body); color: var(--ink); line-height: 1.55;
+         background: #FFE1B0; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  img { max-width: 100%; height: auto; display: block; }
+  a { color: inherit; }
+  .wrap { width: min(1120px, 100% - 48px); margin-inline: auto; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.05; margin: 0; letter-spacing: .5px; }
+  h2 { font-size: clamp(2.2rem, 5vw, 3.6rem); }
+  .eyebrow { font-family: var(--display); font-size: .95rem; letter-spacing: 3px; text-transform: uppercase; color: var(--pink); }
+
+  /* ---------- nav ---------- */
+  nav { position: absolute; inset: 0 0 auto 0; z-index: 5; padding: 22px 0; }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; }
+  nav img { height: 40px; width: auto; filter: drop-shadow(0 3px 8px rgba(110,18,64,.25)); }
+  nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; font-weight: 700; color: #fff; }
+  nav a { text-decoration: none; opacity: .92; }
+  nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 5px; }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; color: #fff; overflow: hidden; padding: 150px 0 0;
+          background: linear-gradient(160deg, #FF4DA6 0%, #FF7A5C 52%, #FFC23F 100%); }
+  .sun { position: absolute; width: 1100px; height: 1100px; right: -340px; top: -560px; pointer-events: none; }
+  .sun .disc { position: absolute; inset: 22%; border-radius: 50%;
+               background: radial-gradient(circle, #FFF3A8 0%, #FFE678 60%, rgba(255,230,120,.0) 100%);
+               box-shadow: 0 0 160px 60px rgba(255,230,120,.55); }
+  .sun .rays { position: absolute; inset: 0; animation: spin 90s linear infinite; }
+  .sun .rays i { position: absolute; left: 50%; top: 50%; width: 16px; height: 110px; margin: -55px 0 0 -8px;
+                 border-radius: 8px; background: rgba(255,230,120,.8); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hero .wrap { position: relative; display: grid; grid-template-columns: 1.2fr .8fr; gap: 40px; align-items: end; }
+  .hero-copy { padding-bottom: 110px; }
+  .hero h1 { font-size: clamp(2.7rem, 6.2vw, 4.9rem); white-space: nowrap; text-shadow: 0 6px 0 rgba(110,18,64,.25), 0 18px 40px rgba(110,18,64,.3); }
+  .hero h1 em { font-style: normal; color: var(--yellow); display: block; }
+  .hero p.lede { font-size: clamp(1.1rem, 1.8vw, 1.4rem); font-weight: 600; max-width: 30ch; margin: 26px 0 34px;
+                 text-shadow: 0 2px 12px rgba(110,18,64,.3); }
+  .cta { display: inline-flex; align-items: center; gap: 14px; padding: 14px 26px 14px 18px; border-radius: 18px;
+         background: var(--berry); color: #fff; text-decoration: none; box-shadow: 0 16px 36px rgba(80,10,45,.4);
+         transition: transform .2s ease; }
+  .cta:hover { transform: translateY(-3px); }
+  .cta svg { width: 30px; height: 30px; fill: #fff; }
+  .cta small { display: block; font-size: .72rem; opacity: .8; letter-spacing: .4px; }
+  .cta b { display: block; font-size: 1.2rem; line-height: 1.1; }
+  .hero .fine { margin-top: 18px; font-size: .9rem; font-weight: 600; opacity: .9; }
+
+  /* ---------- phone frame ---------- */
+  .phone { border-radius: 13.5% / 6.3%; padding: 2.2%; background: var(--berry);
+           box-shadow: 0 0 0 3px rgba(255,255,255,.35), 0 40px 80px rgba(80,10,45,.45); }
+  .phone img { border-radius: 12% / 5.6%; width: 100%; height: auto; }
+  .hero-phone { width: min(400px, 82%); margin: 0 auto -150px; animation: bob 6s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(-14px); } }
+
+  .wave { display: block; width: 100%; height: 90px; position: relative; z-index: 2; margin-top: -89px; }
+
+  /* ---------- stats strip ---------- */
+  .strip { padding: 70px 0 30px; }
+  .strip .wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .stat { background: rgba(255,255,255,.55); border: 1.5px solid rgba(255,255,255,.8); border-radius: 28px;
+          padding: 26px 28px; backdrop-filter: blur(8px); }
+  .stat b { font-family: var(--display); font-weight: 400; font-size: 2.4rem; color: var(--pink); display: block; line-height: 1; }
+  .stat span { font-weight: 600; color: var(--ink-soft); }
+
+  /* ---------- features ---------- */
+  .feature { padding: 80px 0; }
+  .feature .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
+  .feature:nth-of-type(even) .shot { order: 2; }
+  .feature .shot { position: relative; }
+  .feature .shot .phone { width: min(340px, 78%); margin: 0 auto; transform: rotate(-3deg); }
+  .feature:nth-of-type(even) .shot .phone { transform: rotate(3deg); }
+  .blob { position: absolute; inset: 8% 4%; border-radius: 46% 54% 58% 42% / 48% 44% 56% 52%; z-index: -1;
+          background: linear-gradient(140deg, #FF6AB0, #FF9F4D); opacity: .9; }
+  .feature:nth-of-type(even) .blob { background: linear-gradient(140deg, #FFC23F, #FF4DA6); }
+  .feature h2 { margin: 12px 0 18px; }
+  .feature p { font-size: 1.15rem; color: #7d2a55; margin: 0 0 22px; max-width: 46ch; }
+  .ticks { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; font-weight: 600; }
+  .ticks li { display: flex; gap: 12px; align-items: flex-start; }
+  .ticks li::before { content: ""; flex: none; width: 24px; height: 24px; margin-top: 1px; border-radius: 50%;
+                      background: var(--pink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat; }
+
+  /* ---------- more features grid ---------- */
+  .more { padding: 90px 0; background: linear-gradient(180deg, #FFE1B0 0%, #FFD0C2 100%); }
+  .more h2 { text-align: center; margin-bottom: 50px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .card { background: rgba(255,255,255,.6); border: 1.5px solid rgba(255,255,255,.85); border-radius: 28px; padding: 30px;
+          transition: transform .25s ease, box-shadow .25s ease; }
+  .card:hover { transform: translateY(-6px); box-shadow: 0 22px 44px rgba(110,18,64,.14); }
+  .card .emoji { font-size: 2rem; width: 60px; height: 60px; display: grid; place-items: center; border-radius: 18px;
+                 background: linear-gradient(140deg, #FF6AB0, #FF9F4D); margin-bottom: 18px; }
+  .card h3 { font-size: 1.35rem; margin-bottom: 8px; }
+  .card p { margin: 0; color: #7d2a55; }
+
+  /* ---------- privacy band ---------- */
+  .private { padding: 100px 0; color: #fff; text-align: center; position: relative; overflow: hidden;
+             background: linear-gradient(160deg, #6E1240 0%, #C2185B 55%, #FF7A1A 100%); }
+  .private h2 em { font-style: normal; color: var(--yellow); }
+  .private p { font-size: 1.2rem; max-width: 56ch; margin: 22px auto 36px; opacity: .95; }
+  .pills { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .pills span { padding: 10px 20px; border-radius: 99px; font-weight: 700; background: rgba(255,255,255,.16);
+                border: 1.5px solid rgba(255,255,255,.4); }
+
+  /* ---------- support ---------- */
+  .support { padding: 90px 0; }
+  .support .wrap { display: grid; grid-template-columns: .8fr 1.2fr; gap: 60px; }
+  .support h2 { margin: 12px 0 18px; }
+  .support .mail { display: inline-block; margin-top: 10px; padding: 14px 24px; border-radius: 99px; font-weight: 800;
+                   color: #fff; text-decoration: none; background: linear-gradient(90deg, var(--pink), var(--orange));
+                   box-shadow: 0 14px 28px rgba(255,46,147,.3); }
+  details { background: rgba(255,255,255,.6); border: 1.5px solid rgba(255,255,255,.85); border-radius: 22px;
+            padding: 20px 24px; margin-bottom: 12px; }
+  summary { cursor: pointer; font-weight: 800; font-size: 1.08rem; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; font-family: var(--display); color: var(--pink); font-size: 1.5rem; line-height: 1; transition: transform .2s; }
+  details[open] summary::after { transform: rotate(45deg); }
+  details p { margin: 12px 0 0; color: #7d2a55; }
+
+  /* ---------- final CTA + footer ---------- */
+  .final { text-align: center; padding: 100px 0 110px; color: #fff; position: relative; overflow: hidden;
+           background: linear-gradient(160deg, #FF4DA6 0%, #FF7A5C 52%, #FFC23F 100%); }
+  .final img.icon { width: 120px; border-radius: 27px; margin: 0 auto 28px; box-shadow: 0 24px 50px rgba(80,10,45,.4); }
+  .final h2 { font-size: clamp(2.6rem, 6vw, 4.4rem); text-shadow: 0 6px 0 rgba(110,18,64,.22); margin-bottom: 30px; }
+  footer { background: var(--berry); color: rgba(255,255,255,.8); padding: 40px 0; font-size: .92rem; }
+  footer .wrap { display: grid; gap: 14px; }
+  footer nav, footer ul { all: unset; }
+  footer .links { display: flex; flex-wrap: wrap; gap: 22px; font-weight: 700; color: #fff; }
+  footer .links a { text-decoration: none; }
+  footer .links a:hover { text-decoration: underline; }
+  footer p { margin: 0; max-width: 80ch; }
+
+  /* ---------- scroll reveal ---------- */
+  .js .reveal { opacity: 0; transform: translateY(34px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
+  .js .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 860px) {
+    nav ul { display: none; }
+    .hero { padding-top: 110px; }
+    .hero .wrap, .feature .wrap, .support .wrap { grid-template-columns: 1fr; gap: 44px; }
+    .hero-copy { padding-bottom: 0; text-align: center; }
+    .hero p.lede { margin-inline: auto; }
+    .feature { padding: 56px 0; }
+    .feature:nth-of-type(even) .shot { order: 0; }
+    .strip .wrap, .grid { grid-template-columns: 1fr; }
+    .sun { width: 760px; height: 760px; right: -300px; top: -420px; }
+    .sun .rays { display: none; } /* they cross the headline at phone width */
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sun .rays, .hero-phone { animation: none; }
+    .js .reveal { opacity: 1; transform: none; transition: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav aria-label="Main">
+  <div class="wrap">
+    <a href="#top"><img src="img/logo.png" alt="Sunkissed"></a>
+    <ul>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#privacy">Privacy</a></li>
+      <li><a href="#support">Support</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="sun" aria-hidden="true"><div class="rays" id="rays"></div><div class="disc"></div></div>
+  <div class="wrap">
+    <div class="hero-copy">
+      <h1>Get the tan.<em>Skip the burn.</em></h1>
+      <p class="lede">Live UV, the best hours to tan today, and a flip timer that keeps your glow even.</p>
+      <!-- Swap href for the App Store link once the app is live. -->
+      <a class="cta" href="#support" id="store-link">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.05 12.54c-.03-2.7 2.2-4 2.3-4.06-1.25-1.83-3.2-2.08-3.9-2.11-1.66-.17-3.24.98-4.08.98-.84 0-2.14-.96-3.52-.93-1.81.03-3.48 1.05-4.41 2.67-1.88 3.26-.48 8.09 1.35 10.74.9 1.3 1.96 2.75 3.36 2.7 1.35-.05 1.86-.87 3.49-.87 1.63 0 2.09.87 3.52.84 1.45-.02 2.37-1.32 3.26-2.62 1.03-1.5 1.45-2.96 1.48-3.04-.03-.01-2.83-1.09-2.85-4.3zM14.37 4.6c.74-.9 1.24-2.15 1.1-3.4-1.07.04-2.36.71-3.13 1.61-.69.8-1.29 2.07-1.13 3.3 1.19.09 2.41-.61 3.16-1.51z"/></svg>
+        <span><small>Coming soon to the</small><b>App Store</b></span>
+      </a>
+      <p class="fine">Free · No account · No ads</p>
+    </div>
+    <div class="phone hero-phone"><img src="img/01_home.jpg" alt="Sunkissed home screen showing a UV index of 11 in Miami" width="660" height="1434"></div>
+  </div>
+</header>
+<svg class="wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true"><path fill="#FFE1B0" d="M0 50c180 40 360 40 540 12s360-44 540-20 270 40 360 30v18H0z"/></svg>
+
+<section class="strip">
+  <div class="wrap">
+    <div class="stat reveal"><b>Live</b><span>UV index for exactly where you are</span></div>
+    <div class="stat reveal"><b>7 days</b><span>of UV outlook to plan your week</span></div>
+    <div class="stat reveal"><b>0</b><span>accounts, ads, or trackers</span></div>
+  </div>
+</section>
+
+<main id="features">
+  <section class="feature">
+    <div class="wrap">
+      <div class="shot reveal"><div class="blob"></div><div class="phone"><img loading="lazy" src="img/04_details.jpg" alt="Hourly UV curve peaking at 11 at 1 PM" width="660" height="1434"></div></div>
+      <div class="reveal">
+        <span class="eyebrow">Know your sun</span>
+        <h2>Find your golden hours</h2>
+        <p>Sunkissed reads today's forecast and picks the hours worth going outside for. Drag across the curve to check any time of day.</p>
+        <ul class="ticks">
+          <li>Live UV index with a plain label, from Low to Extreme</li>
+          <li>Today's best window to tan, at a glance</li>
+          <li>Tap any day in the outlook to see its curve</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="feature">
+    <div class="wrap">
+      <div class="shot reveal"><div class="blob"></div><div class="phone"><img loading="lazy" src="img/02_timer.jpg" alt="Session timer showing Front, 17:38, flip to back in 2:22" width="660" height="1434"></div></div>
+      <div class="reveal">
+        <span class="eyebrow">The flip timer</span>
+        <h2>Flip on time. Tan evenly.</h2>
+        <p>Slide the sun to start. Sunkissed tells you when to turn over and when to reapply, even with your phone locked.</p>
+        <ul class="ticks">
+          <li>Front and back flips on the interval you choose</li>
+          <li>Sunscreen reapply reminders</li>
+          <li>Your session survives closing or force-quitting the app</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="feature">
+    <div class="wrap">
+      <div class="shot reveal"><div class="blob"></div><div class="phone"><img loading="lazy" src="img/03_setup.jpg" alt="Session setup with time, flip interval, and SPF options" width="660" height="1434"></div></div>
+      <div class="reveal">
+        <span class="eyebrow">Made for you</span>
+        <h2>Your session, your way</h2>
+        <p>Set a length or leave it open-ended. Sunkissed estimates your burn limit from your skin type, your SPF, and the UV right now.</p>
+        <ul class="ticks">
+          <li>An SPF recommendation for your skin and today's UV</li>
+          <li>See how much sun is left before you start</li>
+          <li>Timed or open-ended, your call</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="more">
+    <div class="wrap">
+      <h2 class="reveal">And a little extra glow</h2>
+      <div class="grid">
+        <div class="card reveal"><div class="emoji">🔔</div><h3>Good-window alerts</h3><p>Pick a UV level and get one heads-up on the days the forecast reaches it. Quiet hours included.</p></div>
+        <div class="card reveal"><div class="emoji">📸</div><h3>Before and after card</h3><p>Add two photos to a finished session and get a card with your stats, ready to save or share.</p></div>
+        <div class="card reveal"><div class="emoji">✅</div><h3>Session summary</h3><p>Time, flips, SPF, and the UV you soaked in, summed up the moment you finish.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<section class="private" id="privacy">
+  <div class="wrap reveal">
+    <h2>Your data stays <em>on your phone</em></h2>
+    <p>Sunkissed has no accounts and no servers. Your profile, sessions, and photos never leave your device. Your location is used only to fetch the UV forecast.</p>
+    <div class="pills"><span>No account</span><span>No ads</span><span>No analytics</span><span>No tracking</span></div>
+    <p style="margin-top:36px;font-size:1rem"><a href="https://docs.google.com/document/d/e/2PACX-1vQbBM3LUcNwkBIq1-tpRHTFewUNMZNzLUF29RkPoHOp_cBelMyqGQtj16XcbRNKIsg_UqHFblo7hCLX/pub">Read the privacy policy →</a></p>
+  </div>
+</section>
+
+<section class="support" id="support">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">Support</span>
+      <h2>Need a hand?</h2>
+      <p>Start with the common questions here. The support page has the rest.</p>
+      <a class="mail" href="https://docs.google.com/document/d/1-H4aINnXSmi8tPGm4nr1QpJdDUXCwrw4LU0f_xMfbQ8/edit?usp=sharing">Visit the support page</a>
+    </div>
+    <div class="reveal">
+      <details><summary>The UV index won't load</summary><p>Sunkissed needs your location and an internet connection. Open Settings → Sunkissed → Location and choose "While Using the App," then pull down on the home screen to refresh.</p></details>
+      <details><summary>I'm not getting alerts</summary><p>Open Settings → Sunkissed → Notifications and allow them. Then check your alert level, quiet hours, and selected days in Sunkissed's own settings.</p></details>
+      <details><summary>My session disappeared</summary><p>A session stays until you tap End session, even if you close or force-quit the app. Reopen Sunkissed and it returns to your session. Deleting the app removes it.</p></details>
+      <details><summary>How is my burn time estimated?</summary><p>From your skin type, your SPF, and the current UV index. It is an estimate, not a guarantee. Skin, sunscreen, water, and sweat all change it.</p></details>
+      <details><summary>Where do my photos go?</summary><p>Nowhere. They stay on your phone. Sunkissed saves a card only when you tap Save, and shares one only when you tap Share.</p></details>
+      <details><summary>How do I delete my data?</summary><p>Delete the app. Sunkissed has no accounts and no servers, so nothing is stored anywhere else.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap reveal">
+    <img class="icon" src="img/icon.png" alt="Sunkissed app icon" width="120" height="120">
+    <h2>Chase the sun, smarter</h2>
+    <a class="cta" href="#support">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.05 12.54c-.03-2.7 2.2-4 2.3-4.06-1.25-1.83-3.2-2.08-3.9-2.11-1.66-.17-3.24.98-4.08.98-.84 0-2.14-.96-3.52-.93-1.81.03-3.48 1.05-4.41 2.67-1.88 3.26-.48 8.09 1.35 10.74.9 1.3 1.96 2.75 3.36 2.7 1.35-.05 1.86-.87 3.49-.87 1.63 0 2.09.87 3.52.84 1.45-.02 2.37-1.32 3.26-2.62 1.03-1.5 1.45-2.96 1.48-3.04-.03-.01-2.83-1.09-2.85-4.3zM14.37 4.6c.74-.9 1.24-2.15 1.1-3.4-1.07.04-2.36.71-3.13 1.61-.69.8-1.29 2.07-1.13 3.3 1.19.09 2.41-.61 3.16-1.51z"/></svg>
+      <span><small>Coming soon to the</small><b>App Store</b></span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="#features">Features</a>
+      <a href="#support">Support</a>
+      <a href="https://docs.google.com/document/d/e/2PACX-1vQbBM3LUcNwkBIq1-tpRHTFewUNMZNzLUF29RkPoHOp_cBelMyqGQtj16XcbRNKIsg_UqHFblo7hCLX/pub">Privacy policy</a>
+      <a href="https://docs.google.com/document/d/1-H4aINnXSmi8tPGm4nr1QpJdDUXCwrw4LU0f_xMfbQ8/edit?usp=sharing">Support page</a>
+    </div>
+    <p>Sunkissed offers general sun-safety guidance, not medical advice. Any tan is skin damage. Wear sunscreen, and see a dermatologist about any concern with your skin.</p>
+    <p>© 2026 Devoted Coders. UV data by Open-Meteo. Apple and App Store are trademarks of Apple Inc.</p>
+  </div>
+</footer>
+
+<script>
+  // Sun rays around the hero sun.
+  const rays = document.getElementById('rays');
+  for (let i = 0; i < 16; i++) {
+    const r = document.createElement('i');
+    r.style.transform = `rotate(${i * 22.5}deg) translateY(-430px)`;
+    rays.appendChild(r);
+  }
+  // Reveal sections as they scroll into view.
+  document.documentElement.classList.add('js');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (!e.isIntersecting) return;
+      e.target.style.transitionDelay = `${Math.min(i, 3) * 90}ms`;
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+</script>
+</body>
+</html>
