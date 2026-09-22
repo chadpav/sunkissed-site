@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support — Sunkissed</title>
+<meta name="description" content="Help with Sunkissed: location, alerts, sessions, photos, and your data.">
+<meta name="theme-color" content="#FF4DA6">
+<link rel="icon" href="img/favicon.png">
+<style>
+  @font-face { font-family: "Titan One"; src: url("fonts/TitanOne-Regular.ttf"); font-display: swap; }
+  :root { --pink: #FF2E93; --yellow: #FFE678; --ink: #6E1240; --berry: #2A0A1C;
+          --display: "Titan One", "Arial Rounded MT Bold", system-ui, sans-serif;
+          --body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--body); color: var(--ink); line-height: 1.6; background: #FFE1B0; -webkit-font-smoothing: antialiased; }
+  .wrap { width: min(760px, 100% - 48px); margin-inline: auto; }
+  header { color: #fff; padding: 22px 0 70px; background: linear-gradient(160deg, #FF4DA6 0%, #FF7A5C 52%, #FFC23F 100%); }
+  header nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 60px; }
+  .brand { display: inline-block; line-height: 0; position: relative; filter: drop-shadow(0 4px 10px rgba(110,18,64,.35)); }
+  .brand img { height: 40px; width: auto; }
+  .brand img.white { filter: brightness(0) invert(1); }
+  .brand img.sun { position: absolute; left: 0; top: 0; height: 40px; clip-path: inset(0 56% 0 0); }
+  header nav a.back { color: var(--ink); font-weight: 800; text-decoration: none; }
+  h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2.4rem, 6vw, 4rem); line-height: 1.05; margin: 0;
+       text-shadow: 0 6px 0 rgba(110,18,64,.22); }
+  header p { margin: 14px 0 0; font-weight: 600; opacity: .95; }
+  main { padding: 50px 0 80px; }
+  h2 { font-family: var(--display); font-weight: 400; font-size: 1.5rem; margin: 40px 0 10px; color: var(--pink); }
+  p { margin: 0 0 14px; font-size: 1.05rem; }
+  a { color: var(--pink); font-weight: 700; }
+  details { background: rgba(255,255,255,.6); border: 1.5px solid rgba(255,255,255,.85); border-radius: 22px; padding: 18px 22px; margin-bottom: 12px; }
+  summary { cursor: pointer; font-weight: 800; font-size: 1.08rem; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; font-family: var(--display); color: var(--pink); font-size: 1.5rem; line-height: 1; }
+  details[open] summary::after { content: "–"; }
+  details p { margin: 12px 0 0; color: #7d2a55; }
+  footer { background: var(--berry); color: rgba(255,255,255,.8); padding: 34px 0; font-size: .92rem; }
+  footer a { color: #fff; text-decoration: none; margin-right: 22px; }
+  footer p { margin: 14px 0 0; font-size: .9rem; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="./"><img class="white" src="img/logo.png" alt="Sunkissed"><img class="sun" src="img/logo.png" alt="" aria-hidden="true"></a>
+      <a class="back" href="./">← Back to site</a>
+    </nav>
+    <h1>Support</h1>
+    <p>Need a hand? Start with the common questions below, or email <a href="mailto:faith@sunkissedapp.com" style="color:#fff">faith@sunkissedapp.com</a>.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <h2>Common questions</h2>
+  <details><summary>The UV index won't load</summary><p>Sunkissed needs your location and an internet connection. Open Settings → Sunkissed → Location and choose "While Using the App," then pull down on the home screen to refresh.</p></details>
+  <details><summary>I'm not getting alerts</summary><p>Open Settings → Sunkissed → Notifications and allow them. Then open Sunkissed's own settings and check your alert level, quiet hours, and selected days.</p></details>
+  <details><summary>My session disappeared</summary><p>A session stays until you tap End session, even if you close or force-quit the app. Reopen Sunkissed and it returns to your session. Deleting the app removes it.</p></details>
+  <details><summary>How does Sunkissed estimate my burn time?</summary><p>It combines your skin type, your SPF, and the current UV index. The result is an estimate, not a guarantee. Skin, sunscreen, water, and sweat all change it.</p></details>
+  <details><summary>Where do my photos go?</summary><p>Nowhere. Your before and after photos stay on your phone. Sunkissed saves a card only when you tap Save, and shares one only when you tap Share.</p></details>
+  <details><summary>How do I delete my data?</summary><p>Delete the app. Sunkissed has no accounts and no servers, so nothing is stored anywhere else.</p></details>
+
+  <h2>Still stuck?</h2>
+  <p>Email <a href="mailto:faith@sunkissedapp.com">faith@sunkissedapp.com</a> with your iPhone model and iOS version, and what you expected to happen.</p>
+
+  <h2>Privacy</h2>
+  <p>Read the <a href="privacy">privacy policy</a>. Sunkissed has no accounts and no servers; your data stays on your phone.</p>
+
+  <h2>A note on sun safety</h2>
+  <p>Sunkissed offers general sun-safety guidance, not medical advice. Any tan is skin damage. Wear sunscreen, and see a dermatologist about any concern with your skin.</p>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a href="./">Home</a>
+    <a href="privacy">Privacy</a>
+    <a href="mailto:faith@sunkissedapp.com">Contact</a>
+    <p>© 2026 Faith Pavliska.</p>
+  </div>
+</footer>
+</body>
+</html>
