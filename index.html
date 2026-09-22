@@ -33,8 +33,15 @@
   /* ---------- nav ---------- */
   nav { position: absolute; inset: 0 0 auto 0; z-index: 5; padding: 22px 0; }
   nav .wrap { display: flex; align-items: center; justify-content: space-between; }
-  nav img { height: 40px; width: auto; filter: drop-shadow(0 3px 8px rgba(110,18,64,.25)); }
-  nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; font-weight: 700; color: #fff; }
+  /* The logo is yellow and pink: the pink half vanishes on the pink hero and
+     the yellow half on white, so it sits on a dark berry pill. */
+  nav .brand { display: block; padding: 10px 22px 8px; border-radius: 99px; background: rgba(74,12,44,.88);
+               border: 1.5px solid rgba(255,255,255,.28); box-shadow: 0 10px 26px rgba(80,10,45,.35); }
+  nav img { height: 36px; width: auto; }
+  /* Same pill for the links: white text washes out over the yellow sun. */
+  nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 12px 26px; font-weight: 700; color: #fff;
+           border-radius: 99px; background: rgba(74,12,44,.88); border: 1.5px solid rgba(255,255,255,.28);
+           box-shadow: 0 10px 26px rgba(80,10,45,.35); }
   nav a { text-decoration: none; opacity: .92; }
   nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 5px; }
 
@@ -175,7 +182,7 @@
 
 <nav aria-label="Main">
   <div class="wrap">
-    <a href="#top"><img src="img/logo.png" alt="Sunkissed"></a>
+    <a class="brand" href="#top"><img src="img/logo.png" alt="Sunkissed"></a>
     <ul>
       <li><a href="#features">Features</a></li>
       <li><a href="#privacy">Privacy</a></li>
